@@ -1,0 +1,40 @@
+{
+  "name": "app1",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "express": "~4.2.0",
+    "static-favicon": "~1.0.0",
+    "morgan": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "body-parser": "~1.0.0",
+    "debug": "~0.7.4",
+    "ejs": "~0.8.5",
+    "express-session": "^1.6.1",
+    "passport": "^0.2.0",
+    "passport-http": "^0.2.2",
+    "passport-local": "^1.0.0",
+    "mongoose": "~3.8.14",
+    "method-override": "~2.1.2",
+    "blueimp-file-upload-expressjs": "latest",
+    "nodemon": "~1.2.1",
+    "mongoose-unique-validator": "~0.3.0",
+    "crcaptcha": "~1.0.1",
+    "captchapng": "0.0.1",
+    "bcrypt-nodejs": "0.0.3",
+    "pos": "~0.1.7",
+    "gingerbread": "~0.3.1",
+    "request": "~2.44.0",
+    "cheerio": "~0.17.0",
+    "cron": "~1.0.4",
+    "underscore": "*",
+    "likely": "~1.0.0",
+    "node-kmeans": "0.0.1",
+    "fuzzysearch-js": "~0.1.1",
+    "languagedetect": "~1.1.1",
+    "timeseries-analysis": "~1.0.11"
+  }
+}

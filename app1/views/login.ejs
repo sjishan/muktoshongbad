@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Log In - MuktoShongbad</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="images/favicon.png">
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<link rel='stylesheet' href='/stylesheets/yamm.css' />
+	<script src="/javascripts/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+
+	<% include head.ejs %>
+
+	<div class="col-lg-3">
+
+		<form action="/login" method="post" role="form">
+			<label>Enter Email Address</label>
+			<div class="form-group">
+				<input class="form-control" type="email" name="email" placeholder="Email" required>
+			</div>
+			<label>Enter Password</label>
+			<div class="form-group">
+				<input class="form-control" type="password" name="password" placeholder="Password" required>
+			</div>
+			<div class="form-group">
+				<input  type="submit" class="btn btn-primary" value="Log in">
+			</div>
+		</form>
+	</div>
+</body>
+</html>

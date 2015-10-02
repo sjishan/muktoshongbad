@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - MuktoShongbad</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <link rel='stylesheet' href='/stylesheets/yamm.css' />
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+
+
+	<% include head.ejs %>
+    
+    <div class="col-lg-3">
+        <form action="" method="post" role="form">
+
+            <div class="form-group">
+
+                <input type= "hidden" name="regnumber" value="<%= capnumber %>">
+            </div>
+
+            <div class="form-group">
+                <label>Enter Full Name</label>
+                <input class="form-control" type="text" name="name" placeholder="Full Name" required><br/>
+            </div>
+
+            <div class="form-group">
+                <label>Enter Email Address</label>
+                <input class="form-control" type="email" name="email" placeholder="Email" required><br/>
+            </div>
+
+            <div class="form-group">
+                <label>Enter Date of Birth</label>
+                <input class="form-control" type="text" name="dob" placeholder="Date of Birth" required><br/>
+            </div>
+
+            <div class="form-group">
+                <label>Enter Password</label>
+                <input class="form-control" type="password" name="password" placeholder="Password" required><br/>
+            </div>
+
+            <div class="form-group">
+                <label>Enter Captcha</label>
+                <img src="data:image/jpeg;base64,<%= valicode %>"/>
+                <input class="form-control" type="text" name="captchaval" placeholder="Enter Captcha" required><br/>
+            </div>
+
+            <input class="btn btn-primary" type="submit" value="Register">
+        </form>
+    </div>
+</body>
+</html>

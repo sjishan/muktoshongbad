@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= arcinfo.headline %> - MuktoShongbad</title>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+  <link rel="stylesheet" href="/stylesheets/blueimp-gallery.min.css">
+  <script src="/javascripts/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.js"></script>
+  <script>
+    $('.carousel').carousel({
+      pause: "false"
+    });
+  </script>
+
+</head>
+<body>
+
+
+ <% if (arcinfo != null) { var a= arcinfo.mainsection;var res = a.split('ΨΨΨΨΨΨΨΨΨΨ'); %>
+ 
+ <% var b=res[1].split('*');
+ var images=new Array();
+ var videos=new Array();
+ var audio=new Array();
+ var re = /(?:\.([^.]+))?$/;
+ var avflag = 0;
+ for(var i=0;i<b.length-1;i++){
+  var ext = re.exec(b[i])[1];
+  if(ext=="jpeg"||ext=="jpg"||ext=="png"||ext=="bmp"||ext=="gif"||ext=="JPEG"||ext=="JPG"||ext=="PNG"||ext=="BMP"||ext=="GIF"){
+    images.push(b[i]);
+  }
+else if(ext=="flv"||ext=="avi"||ext=="wmv"||ext=="mov"||ext=="mp4"||ext=="flv"||ext=="AVi"||ext=="WMV"||ext=="MOV"||ext=="MP4"){
+  videos.push(b[i]);
+  avflag = 1;
+}
+else{ 
+  audio.push(b[i]);
+  avflag = 1;
+}
+
+
+}
+
+
+%>
+
+<% include head.ejs %>
+
+<% if(isAuthenticated) { %>
+{
+  <div class="modal fade" id="reportArticle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <div id="arcRepHead">
+            <h4 class="modal-title" id="myModalLabel">Report</h4>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div id="arcRepBody">
+            <p> Please mention your reason for reporting </p>
+            <input type="radio" name="reasonArc" value="Offensive Languages">Offensive Languages<br>
+            <input type="radio" name="reasonArc" value="Fake Information">Fake Information<br>
+            <input type="radio" name="reasonArc" value="Graphic or Adult Content">Graphic or Adult Content<br>
+            <input type="radio" name="reasonArc" value="Spam or Repitation">Spam or Repitation<br>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="typeArc" value="Article">
+          <input type="hidden" id="reporternameArc" value="<%= user.name %>">
+          <input type="hidden" id="reporteridArc" value="<%= user.id %>">
+          <input type="hidden" id="reportedonArc" value="<%= arcinfo._id %>">
+          <button id="reportArticleBtn" type="button" class="btn btn-warning">Report</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="reportComment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <div id="comRepHead">
+            <h4 class="modal-title" id="myModalLabel">Report</h4>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div id="comRepBody">
+            <p> Please mention your reason for reporting </p>
+            <input type="radio" name="reasonCom" value="Offensive Languages">Offensive Languages<br>
+            <input type="radio" name="reasonCom" value="Fake Information">Fake Information<br>
+            <input type="radio" name="reasonCom" value="Graphic or Adult Content">Graphic or Adult Content<br>
+            <input type="radio" name="reasonCom" value="Spam or Repitation">Spam or Repitation<br>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="typeCom" value="Comment">
+          <input type="hidden" id="reporternameCom" value="<%= user.name %>">
+          <input type="hidden" id="reporteridCom" value="<%= user.id %>">
+          <input type="hidden" id="reportedonCom" value="">
+
+          <button id="reportCommentBtn" type="button" class="btn btn-warning">Report</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-8 articlemainbox">
+        <div class="row archead">
+          <h1><%= arcinfo.headline %> </h1>
+          <p> <%= arcinfo.summary %> </p>
+        </div>
+        <img class=" img-responsive" src="/uploaded/files/<%= arcinfo.primaryimage%>"/>
+
+
+        <mark><p>Created: <%= arcinfo.created.toString().slice(0, -28) %> </p>
+          <p>Author: <a href="/profile/<%=arcinfo.memberid.replace(/['"]+/g, '') %>"><%= arcinfo.membername %></a> </p>
+          <p>Category: <%= arcinfo.category %> </p>
+          <p>Tags: <% tags = arcinfo.tags.split(','); %>
+            <%for(i in tags) { %>
+            <a href="/search?query=<%=tags[i]%>"><%=tags[i]%> </a> <% } %> </p>
+            <p>Article Rating:  
+              <% for(var i=0; i < Math.round(arcinfo.rate/arcinfo.count); i++) {%>
+              <span class="glyphicon glyphicon-star star"></span> <%}%>
+            </p>
+            <% if(isAuthenticated) { %> <p><a href="" data-toggle="modal" data-target="#reportArticle"><span class="glyphicon glyphicon-warning-sign"></span>Report</a></p> <% } %>
+          </mark>
+
+          <% var text = res[0].split(/\r\n|\r|\n/g); %>
+          <p>
+            <%for(var i =0; i < text.length; i++) {%>
+            <%= text[i] %> <br/>
+            <%}%>
+          </p>
+
+
+
+          <% if(images.length >1) { %>
+          <br/>
+          <h4>Image Gallery:</h4>
+
+
+          <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+      <!-- <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+      <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    </ol> -->
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+
+
+      <%   for(var i=1;i<images.length;i++){ 
+       url = images[i].replace(/ /g, '%20');
+       if(i==1) { %>
+       <div class="item  active"> 
+         <img  style="text-align:center; width:100%; " src="/uploaded/files/<%= url%>" />
+       </div>
+       <% } else { %>
+       <div class="item " >
+
+         <img  style="text-align:center; width:100%; " src="/uploaded/files/<%= url%>" />
+       </div>
+       <% } } %>
+     </div>
+
+
+     <!-- Controls -->
+     <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+    
+  </div>
+
+  <% } %>
+
+
+
+  <% if( avflag==1) { %> 
+  <br/>
+  <h4>Other Media:</h4>
+  <% } for(var i=0;i<audio.length;i++){
+   url = audio[i].replace(/ /g, '%20');
+   var ext = re.exec(audio[i])[1];%>
+   <audio controls>
+    <source src="/uploaded/files/<%= url %>" type="audio/<%= ext %>">
+      Your browser does not support the audio element.
+    </audio>
+
+    <% } for(var i=0;i<videos.length;i++){
+     url = videos[i].replace(/ /g, '%20');
+     var ext = re.exec(videos[i])[1];
+
+     %>
+     <video controls>
+      <source src="/uploaded/files/<%= url %>" type="video/<%= ext %>">
+        Your browser does not support the video element.
+      </video>
+
+      <% } %>
+
+
+
+      <% } else { %>
+      <p>User does not Exist</p> 
+
+      <% }  if ( (user !=null) && (arcinfo.memberid === JSON.stringify(user.id) )) { %>
+      <div class="row"><a class="btn btn-info" href="/article/<%=arcinfo._id%>/edit">Edit Article</a></div><br>
+      <% } %> 
+
+    </div>
+
+    <div class="col-lg-4 arcRightCol">
+     <% if(isAuthenticated && (arcinfo.memberid != JSON.stringify(user.id) && (eligible==1)) ) {%>
+     <div class="row homeBoxEvenFlex">
+      <div class="row greenHead">Your opinion on the article</div>
+      <div class="inner">
+
+
+        <form action="/postvote" method="post">
+         <input type="radio" name="vote" value="5">Very Informative<br>
+         <input type="radio" name="vote" value="4">Good<br>
+         <input type="radio" name="vote" value="3">Okay<br>
+         <input type="radio" name="vote" value="2">Poor<br>
+         <input type="radio" name="vote" value="1">Very Poor<br>
+         <input type="hidden" name="memberid" value="<%=user.id%>">
+         <input type="hidden" name="articleid" value="<%=arcinfo._id%>"> <br/>
+         <input class="btn btn-success" type="submit" value="Rate it !">
+       </form> 
+     </div>
+   </div>
+   <%}%>
+
+   <% if(arcinfo.relatedid.length !=0) { %>
+   <div class="row homeBoxOddFlex">
+     <div class="row blueHead">You may also like to read</div>
+     <div class="inner">
+
+       <% var rid = arcinfo.relatedid.split('~'); 
+       var rhd = arcinfo.relatedheadline.split('~');
+       var rimg = arcinfo.relatedimages.split('~');
+
+       for(var i=0; i < rid.length-1; i++) { if(i == 10) break; %>
+       <p><a href="/article/<%=rid[i].replace(/['"]+/g, '')%>"><%=rhd[i]%></a></p>
+       <% } %>
+       
+     </div>
+   </div>
+   <% } %>
+ </div>
+
+</div>
+<!--comment-->
+<div class= "row col-lg-8">
+  <% if(isAuthenticated) { %>
+  <div class ="homeBoxOddFlex">
+   <div class="row orangeHead">Write a comment</div>
+   <div class="inner">
+     <form action="/commentpost" method="post">
+       <textarea name="comment" style="height:100px" class="form-control" pattern=".{50,300}" required title="Write between 50 to 300 characters"></textarea>
+       <input type="hidden" name="articleid" value="<%= JSON.stringify(arcinfo._id)%>">
+       <input type="hidden" name="memberid" value="<%= JSON.stringify(user.id)%>">
+       <input type="hidden" name="membername" value="<%=user.name%>">
+       <input class="btn btn-warning" style="margin:10px 0;" type="submit" value="Submit">
+     </form>
+   </div>
+ </div>
+ <%}%>
+
+ <div class="row">
+   <div class="row redHead">Comments</div>
+   <%if(commentinfo.length ==0) {%>
+   <p> There is no comment to show </p>
+   <% } var j=0; for(var i=0; i<commentinfo.length; i++) { if(commentinfo[i].hide==0) { if(j%2==1) {%>
+
+   <div class="homeBoxOddFlexNoMargin">
+     <div class="inner">
+       <p> <a href="/profile/<%=commentinfo[i].memberid.replace(/['"]+/g, '')%>"><%= commentinfo[i].membername%> </a> <span class="pull-right"><%= commentinfo[i].created.toString().slice(0, -28)%></span></p>
+       <p><%= commentinfo[i].comment%></p>
+
+       <% if(isAuthenticated) { %> <p><a href="" class = "comRepClick pull-right" id="<%= commentinfo[i]._id%>" data-toggle="modal" data-target="#reportComment"> <span class="glyphicon glyphicon-warning-sign"></span> Report</a></p> <br/> <% } %>
+
+       <% if(isAuthenticated && (commentinfo[i].memberid === JSON.stringify(user.id)) ) {%>
+       <form action="/deletecomment" method="post">
+         <input type="hidden" name="deletecommentid" value="<%=commentinfo[i]._id%>">
+         <input type="hidden" name="articleid" value="<%=arcinfo._id%>">
+         <input type="submit" class="btn btn-danger" value="Delete">
+       </form>
+
+
+       <% } if(isAuthenticated && user.type >0) { %> 
+       <span style="margin:15px 0;">Comment ID: <%=commentinfo[i]._id%> </span>
+
+       <% } %>
+     </div>
+   </div>
+   <% } else { %>
+   <div class="homeBoxEvenFlexNoMargin">
+     <div class="inner">
+       <p><a href="/profile/<%=commentinfo[i].memberid.replace(/['"]+/g, '')%>"><%= commentinfo[i].membername%> </a>
+        <span class="pull-right"><%= commentinfo[i].created.toString().slice(0, -28)%></span></p>
+        <p><%= commentinfo[i].comment%></p>
+
+        <% if(isAuthenticated) { %> <p><a href="" class = "comRepClick pull-right" id="<%= commentinfo[i]._id%>" data-toggle="modal" data-target="#reportComment"> <span class="glyphicon glyphicon-warning-sign"></span> Report</a></p> <br/> <% } %>
+
+        <% if(isAuthenticated && (commentinfo[i].memberid === JSON.stringify(user.id)) ) {%>
+        <form action="/deletecomment" method="post">
+         <input type="hidden" name="deletecommentid" value="<%=commentinfo[i]._id%>">
+         <input type="hidden" name="articleid" value="<%=arcinfo._id%>">
+         <input type="submit" class="btn btn-danger" value="Delete">
+       </form>
+
+
+       <% } if(isAuthenticated && user.type >0) { %> 
+       <span style="margin:10px 0;">Comment ID: <%=commentinfo[i]._id%> </span>
+
+       <% } %>
+     </div>
+   </div>
+
+   <% } } j++; } %>
+
+ </div>
+
+</div>
+
+
+
+</div>
+</body>
+
+<script>
+  $(function(){ 
+    $(document).on('click', '#reportArticleBtn', function(event) {
+      event.preventDefault();
+      $(this).prop("disabled",true);
+      var data = {};
+      data.type = $('#typeArc').val();
+      data.reportername = $('#reporternameArc').val();
+      data.reporterid = $('#reporteridArc').val();
+      data.reportedon = $('#reportedonArc').val();
+      data.reason= $('input:radio[name=reasonArc]:checked').val();
+      console.log(data);
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: '/report',            
+        success: function(data) {
+          if(data.success ==1)
+          {
+            //console.log(data.success); 
+            $(this).val("done");
+          }
+        }
+      }); 
+    });
+
+    $(".comRepClick").click(function(){
+      console.log(this.id);
+      $('#reportedonCom').val(this.id);
+
+    });
+
+    $(document).on('click', '#reportCommentBtn', function(event) {
+      event.preventDefault();
+      $(this).prop("disabled",true);
+      var data = {};
+      data.type = $('#typeCom').val();
+      data.reportername = $('#reporternameCom').val();
+      data.reporterid = $('#reporteridCom').val();
+      data.reportedon = $('#reportedonCom').val();
+      data.reason= $('input:radio[name=reasonCom]:checked').val();
+      console.log(data);
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: '/report',            
+        success: function(data) {
+          if(data.success ==1)
+          {
+            //console.log(data.success); 
+            $(this).val("done");
+          }
+        }
+      }); 
+    });
+
+  });
+</script>
+
+</html>

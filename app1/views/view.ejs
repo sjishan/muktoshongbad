@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%=message%> - MuktoShongbad</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="images/favicon.png">
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<script src="/javascripts/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+	<% include head.ejs %>
+
+	<br/>
+
+<!--	<ul>
+		<% for(var i=0; i<articles.length; i++) {%>
+		<li><%= articles[i].headline%></li>
+		<% } %>
+	</ul> -->
+	<div class="container">
+
+		<div class="row">
+
+			<div class="col-lg-9 col-md-9 col-sm-12">
+				<div class="row blueHead"><%= message %></div>
+				<% var j=1; for(var i=0; i<articles.length; i++) {   if((j%2) ==1) {%>
+
+				<div class="homeBoxOdd col-lg-4 col-md-4 col-sm-4 ">
+					<a href="/article/<%=articles[i]._id%>" style="text-decoration: none;">
+						<div class="imgBox">
+							<img src="/uploaded/files/<%= articles[i].primaryimage%>" class="img-responsive homeArcImg">
+						</div>
+						<div class="textBox">
+							<h5><strong><%= articles[i].headline%></strong></h5>
+							<p><%= articles[i].summary%></p>
+						</div>
+					</a>
+				</div>
+
+				<% } else {%>
+
+				<div class="homeBoxEven col-lg-4 col-md-4 col-sm-4">
+					<a href="/article/<%=articles[i]._id%>" style="text-decoration: none;">
+						<div class="imgBox">
+							<img src="/uploaded/files/<%= articles[i].primaryimage%>" class="img-responsive homeArcImg">
+						</div>
+						<div class="textBox">
+							<h5><strong><%= articles[i].headline%></strong></h5>
+							<p><%= articles[i].summary%></p>
+						</div>
+					</a>
+				</div>
+
+				<% } j++;} %>
+			</div>
+
+		</div>
+	</div>
+
+
+ <!--<script type="text/javascript">var a = <%-%>;
+ console.log(a);
+</script>  --> 	
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

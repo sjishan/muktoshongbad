@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Handle Roles - MuktoShongbad</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="images/favicon.png">
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<script src="/javascripts/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+
+
+	<br/>
+	<% include adminhead.ejs %>
+	<div class="container">
+		<div class="col-md-5">
+			<div class="row">
+				<div class="row blueHead">Make New Admin</div>
+				<div class="homeBoxEvenFlex">
+					<div class="inner">
+						<form action="/makeadmin" method="post" role="form">
+							<input type="text"  class="form-control" style="width:75%; display:inline;" name="userid" placeholder="Enter User ID" required> &nbsp;
+							<input type="submit" class="btn btn-primary" value="Add">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="row greenHead">List of Admins</div>
+				<% for(i in admins) { %>
+				<div class="homeBoxOddFlex">
+					<div class="inner">
+
+						<span> <%= admins[i].name %> </span> &nbsp;<span> <%= admins[i]._id %> </span>
+						<form action="/removeadmin" method="post" role="form" style="display:inline;"> &nbsp;
+							<input type="hidden"  name="userid" class="btn btn-success" value="<%=admins[i]._id%>">
+							<input type="submit" class="btn btn-success" value="Remove">
+						</form>
+					</div>
+				</div>
+				<% } %>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+<script>
+
+</script>
+</html>

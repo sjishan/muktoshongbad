@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Search - MuktoShongbad</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="images/favicon.png">
+
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<script src="/javascripts/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+
+
+	<br/>
+
+
+ <!--<script type="text/javascript">var a = <%-%>;
+ console.log(a);
+</script>  --> 	
+
+
+<% include head.ejs %>
+
+
+<body>
+	<div id='results' class="col-lg-5">
+		<% if (suggestions != undefined){ %><div class="row"><p><% if( suggestions.length ==1 ) { %> 
+		<span>Closest match:</span> <%} else if(suggestions.length >1) { %> 
+		<span>Closest matches:</span> <% } %> 
+
+		<% for(i in suggestions) { %> <span><%=suggestions[i]%></span>
+		<% } %>
+	</p></div> <%}%>
+	<div class="row blueHead">Search Result</div>
+	<% var counter=0; for(i in data) {  if(data[i].score < 240) {break;} if(counter%2 ==1) {%>
+	<div class="row homeBoxOddFlexNoMargin">
+		<% } else { %>   <!-- short form -->
+		<div class="row homeBoxEvenFlexNoMargin">
+			<% } counter++; %> 
+			<div class="inner">
+				<a href="/article/<%=data[i]._id%>" style="text-decoration: none;"><p class="tMedium"><%= data[i].headline%></p></a>
+				<p class="sum"><%= data[i].summary%></p>
+			</div>
+		</div>
+		<% } %>
+	</div>  
+</div>
+<div  class="col-lg-5" style="margin-top:10px !important;">
+	<a href="#" class="btn btn-primary" id="loadmore">Load More</a>
+</div>
+<input type="hidden" id="initialcount" name="initialcount" value="<%=counter%>"> 
+<input type="hidden" id="query" name="query" value="<%=query%>"> 
+<input type="hidden" id="count" name="count" value="365"> 
+</body>
+
+<script type="text/javascript">
+	$(function(){				
+		$('#loadmore').click(function(e){
+			e.preventDefault();
+			console.log('select_link clicked');
+
+			var data = {};
+			var counter =  $('#intiialcount').val();
+			counter = parseInt(counter);
+			data.count = $('#count').val();
+			data.query = $('#query').val();
+			data.initialcount = counter;
+			$.ajax({
+				type: 'POST',
+				data: JSON.stringify(data),
+				contentType: 'application/json',
+				url: '/search',						
+				success: function(data) {
+					//console.log('success');
+					//console.log(JSON.stringify(data));
+					$('#count').val(JSON.stringify(data.count));
+					//alert(data.count);
+					if(data.newinfo.length ==0) alert("No results found. You may try to load again to search.")
+						$.each(data.newinfo, function(index, val) {
+							if(val.score>240){		
+
+								if(data.initialcount %2 ==1) var html='<div class="row homeBoxOddFlexNoMargin"><div class="inner">';
+								else var html='<div class="row homeBoxEvenFlexNoMargin"><div class="inner">';
+
+								html+='<a href="/article/'+val._id+'" style="text-decoration: none;"><p class="tMedium">'+ val.headline+'</p></a>';
+								html+='<p class="sum">'+val.summary+'</p>';
+								html+='</div></div>';
+								$('#results').append(html);
+								data.initialcount++;
+							}
+						});
+					$('#initialcount').val(JSON.stringify(data.initialcount));
+
+				}
+			});
+
+});				
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ID Search - MuktoShongbad</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="images/favicon.png">
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<script src="/javascripts/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+
+
+	<br/>
+	<% include adminhead.ejs %>
+	<div class="container">
+		<div class="col-md-5">
+			<div class="row">
+				<div class="row blueHead">User Search</div>
+				<div class="homeBoxEvenFlex">
+					<div class="inner">
+						<form action="/usersearch" method="post" role="form">
+							<input type="text" id="user" class="form-control" style="width:75%; display:inline;" name="usersearch" placeholder="Enter User ID" required> &nbsp;
+							<input type="submit" id="loadUser" class="btn btn-primary" value="Search">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="row greenHead">Article Search</div>
+				<div class="homeBoxOddFlex">
+					<div class="inner">
+						<form action="/articlesearch" method="post" role="form">
+							<input type="text" id="article" class="form-control" style="width:75%; display:inline;" name="articlesearch" placeholder="Enter Article ID" required> &nbsp;
+							<input type="submit" id="loadArticle" class="btn btn-success" value="Search">
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="row orangeHead">Comment Search</div>
+				<div class="homeBoxEvenFlex">
+					<div class="inner">
+						<form action="/commentsearch" method="post" role="form">
+							<input type="text" id="comment" class="form-control" style="width:75%; display:inline;" name="commentsearch" placeholder="Enter Comment ID" required> &nbsp;
+							<input type="submit" id="loadComment" class="btn btn-warning" value="Search">
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-5">
+			<div class="row redHead">Search Result</div>
+			<div class="homeBoxOddFlex">
+				<div class="inner" > 
+					<div id="content">No result</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+<script type="text/javascript">
+	$(function(){				
+		$('#loadUser').click(function(e){
+			e.preventDefault();
+
+			var data = {};
+			data.id = $('#user').val();
+			$.ajax({
+				type: 'POST',
+				data: JSON.stringify(data),
+				contentType: 'application/json',
+				url: '/usersearch',						
+				success: function(data) {
+					//console.log('success');
+					//console.log(JSON.stringify(data));
+
+				/*	var html='<div class="row homeBoxEvenFlexNoMargin"><div class="inner">';
+
+					html+='<a href="/article/'+val._id+'" style="text-decoration: none;"><p class="tMedium">'+ val.headline+'</p></a>';
+					html+='<p class="sum">'+val.summary+'</p>';
+					html+='</div></div>';
+					$('#results').append(html); */
+					var html = '<div id="content"><p><strong> Name: </strong> ' + data.docs.name + 
+					'</p>';
+
+					html+= '<p><strong> Email: </strong> ' + data.docs.email + 
+					'</p>';
+					html+= '<p><strong> Profile Image: </strong> ' + data.docs.profileimage + 
+					'</p>';
+					html+= '<input type="hidden" id="searchid"  value="">'
+					if(data.docs.activated ==1)
+					{
+						html+= '<p><input type="submit" id="userStatus" class="btn btn-danger" value="Deactivate"></p></div>';
+					}
+					else
+					{
+						html+= '<p><input type="submit" id="userStatus" class="btn btn-danger" value="Activate"></p></div>';
+					}
+					$('#content').replaceWith(html);
+					$('#searchid').val(data.id);
+					//alert(data.docs.email);
+
+
+				}
+			});
+
+});		
+
+$('#loadArticle').click(function(e){
+	e.preventDefault();
+
+	var data = {};
+	data.id = $('#article').val();
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		url: '/articlesearch',						
+		success: function(data) {
+					//console.log('success');
+					//console.log(JSON.stringify(data));
+
+				/*	var html='<div class="row homeBoxEvenFlexNoMargin"><div class="inner">';
+
+					html+='<a href="/article/'+val._id+'" style="text-decoration: none;"><p class="tMedium">'+ val.headline+'</p></a>';
+					html+='<p class="sum">'+val.summary+'</p>';
+					html+='</div></div>';
+					$('#results').append(html); */
+					var html = '<div id="content"><p><strong> Headline: </strong> ' + data.docs.headline + 
+					'</p>';
+					html+= '<p><strong> Author: </strong> ' + data.docs.membername + 
+					'</p>';
+					html+= '<p><strong> Author ID: </strong> ' + data.docs.memberid + 
+					'</p>';
+					html+= '<p><strong> Date: </strong> ' + data.docs.created + 
+					'</p>';
+
+					var media = data.docs.mainsection.split('ΨΨΨΨΨΨΨΨΨΨ');
+					html+= '<p><strong> Media: </strong> ' + media[1] + 
+					'</p>';
+					html+= '<input type="hidden" id="searchid"  value="">'
+					if(data.docs.hide==1)
+					{
+						html+= '<p><input type="submit" id="articleStatus" class="btn btn-danger" value="Show"></p></div>';
+					}
+					else
+					{
+						html+= '<p><input type="submit" id="articleStatus" class="btn btn-danger" value="Hide"></p></div>';
+					}
+					$('#content').replaceWith(html);
+					$('#searchid').val(data.id);
+					//alert(data.docs.email);
+
+
+				}
+			});
+
+});		
+
+$('#loadComment').click(function(e){
+	e.preventDefault();
+
+	var data = {};
+	data.id = $('#comment').val();
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		url: '/commentsearch',						
+		success: function(data) {
+					//console.log('success');
+					//console.log(JSON.stringify(data));
+
+				/*	var html='<div class="row homeBoxEvenFlexNoMargin"><div class="inner">';
+
+					html+='<a href="/article/'+val._id+'" style="text-decoration: none;"><p class="tMedium">'+ val.headline+'</p></a>';
+					html+='<p class="sum">'+val.summary+'</p>';
+					html+='</div></div>';
+					$('#results').append(html); */
+					var html = '<div id="content"><p><strong> Article ID: </strong> ' + data.docs.articleid + 
+					'</p>';
+					html+= '<p><strong> Author: </strong> ' + data.docs.membername + 
+					'</p>';
+					html+= '<p><strong> Author ID: </strong> ' + data.docs.memberid + 
+					'</p>';
+					html+= '<p><strong> Comment: </strong> ' + data.docs.comment + 
+					'</p>';
+					html+= '<p><strong> Date: </strong> ' + data.docs.created + 
+					'</p>';
+					html+= '<input type="hidden" id="searchid"  value="">'
+					if(data.docs.hide==1)
+					{
+						html+= '<p><input type="submit" id="commentStatus" class="btn btn-danger" value="Show"></p></div>';
+					}
+					else
+					{
+						html+= '<p><input type="submit" id="commentStatus" class="btn btn-danger" value="Hide"></p></div>';
+					} 
+					$('#content').replaceWith(html);
+					$('#searchid').val(data.id);
+					//alert(data.docs.email);
+
+
+				}
+			});
+
+});	
+
+$(document).on('click', '#userStatus', function(event) {
+	event.preventDefault();
+	var data = {};
+	data.id = $('#searchid').val();
+	console.log(data.id);
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		url: '/userstatus',						
+		success: function(data) {
+			if(data.status ==1) $('#userStatus').val('Deactivate');
+			else $('#userStatus').val('Activate');
+		}
+	}); 
+});
+
+$(document).on('click', '#articleStatus', function(event) {
+	event.preventDefault();
+	var data = {};
+	data.id = $('#searchid').val();
+	console.log(data.id);
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		url: '/articlestatus',						
+		success: function(data) {
+			if(data.status ==1) $('#articleStatus').val('Show');
+			else $('#articleStatus').val('Hide');
+		}
+	}); 
+});
+
+$(document).on('click', '#commentStatus', function(event) {
+	event.preventDefault();
+	var data = {};
+	data.id = $('#searchid').val();
+	console.log(data.id);
+	$.ajax({
+		type: 'POST',
+		data: JSON.stringify(data),
+		contentType: 'application/json',
+		url: '/commentstatus',						
+		success: function(data) {
+			if(data.status ==1) $('#commentStatus').val('Show');
+			else $('#commentStatus').val('Hide');
+		}
+	}); 
+});
+
+// $('#commentStatus').click(function(e){
+
+
+// 	var data = {};
+// 	data.id = $('#searchid').val();
+// 	console.log(data.id);
+// 	//console.log(data.id);
+// 	$.ajax({
+// 		type: 'POST',
+// 		data: JSON.stringify(data),
+// 		contentType: 'application/json',
+// 		url: '/commentstatus',						
+// 		success: function(data) {
+// 			console.log(data.id);
+// 		}
+// 	}); 
+
+// });	
+
+});
+</script>
+
+</html>

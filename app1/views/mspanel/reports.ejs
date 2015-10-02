@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Reports - MuktoShongbad</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="images/favicon.png">
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<script src="/javascripts/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+
+
+	<br/>
+	<% include adminhead.ejs %>
+	<div class="container">
+		<div class="col-md-5">
+			<div class="row">
+				<div class="row blueHead">Report List</div>
+				<% for(i in reports) {  if(i%2==0) {%>
+				<div class="homeBoxEvenFlex">
+					<div class="inner">
+						<p><strong> Date: </strong> <%= reports[i].date %></p>
+						<p><strong> Reported by: </strong> <a href="/profile/<%= reports[i].reporterid %>"><%= reports[i].reportername %></a></p>
+						<p><strong> Report type: </strong> <%= reports[i].type %></p>
+						<p><strong> Reported on: </strong> <%= reports[i].reportedon %></p>
+						<p><strong> Reason: </strong> <%= reports[i].reason %></p>
+						<p><strong> Report Handled: </strong> 
+							<form action="/reportcheck" method="post" style="display:inline;">
+								<input type="hidden" name="reportid" value="<%=reports[i]._id%>">
+								<input class="btn btn-primary" type="submit" value="Done">
+							</form>
+						</p>
+					</div>
+				</div>
+				<% } else { %>
+				<div class="homeBoxOddFlex">
+					<div class="inner">
+						<p><strong> Date: </strong> <%= reports[i].date %></p>
+						<p><strong> Reported by: </strong> <a href="/profile/<%= reports[i].reporterid %>"><%= reports[i].reportername %></a></p>
+						<p><strong> Report type: </strong> <%= reports[i].type %></p>
+						<p><strong> Reported on: </strong> <%= reports[i].reportedon %></p>
+						<p><strong> Reason: </strong> <%= reports[i].reason %></p>
+						<p><strong> Report Handled: </strong> 
+							<form action="/reportcheck" method="post" style="display:inline;">
+								<input type="hidden" name="reportid" value="<%=reports[i]._id%>">
+								<input class="btn btn-primary" type="submit" value="Done">
+							</form>
+						</p>
+					</div>
+				</div>
+				<% }  }%>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

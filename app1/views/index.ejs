@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home- MuktoShongbad</title>
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/png" href="images/favicon.png">
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+	<link rel='stylesheet' href='/stylesheets/yamm.css' />
+	<script src="/javascripts/jquery.min.js"></script>
+	<script src="/javascripts/bootstrap.js"></script>
+	<script>    
+		$(document).on('click', '.yamm .dropdown-menu', function(e) {
+			e.stopPropagation()
+		})
+	</script>	
+
+</head>
+<body>
+
+	<% include head.ejs %>
+	<br/>
+
+
+
+	
+
+
+
+<!--<% for(i in test) {%>
+	<p><%= test[i].trend%></p>
+	<% } %>
+	<% for(i in test) {%>
+	<p><%= test[i].frequency%></p>
+	<% } %> -->
+
+	<% var recArc = articles; %>
+	<div class="container">
+
+		<div class="row">
+			<div class="col-lg-7 col-md-7 col-sm-12">
+
+				<div class="row blueHead">Featured Articles</div>
+				<% var j=1; for(i in articles) { if( articles[i] != undefined && articles[i].ranking == 1) {   if((j%2) ==1) {%>
+
+				<div class="homeBoxOdd col-lg-6 col-md-6 col-sm-6 ">
+					<a href="/article/<%=articles[i]._id%>" style="text-decoration: none;">
+						<div class="imgBox">
+							<img src="/uploaded/files/<%= articles[i].primaryimage%>" class="img-responsive homeArcImg">
+						</div>
+						<div class="textBox">
+							<h5><strong><%= articles[i].headline%></strong></h5>
+							<p><%= articles[i].summary%></p>
+						</div>
+					</a>
+				</div>
+
+				<% } else {%>
+
+				<div class="homeBoxEven col-lg-6 col-md-6 col-sm-6">
+					<a href="/article/<%=articles[i]._id%>" style="text-decoration: none;">
+						<div class="imgBox">
+							<img src="/uploaded/files/<%= articles[i].primaryimage%>" class="img-responsive homeArcImg">
+						</div>
+						<div class="textBox">
+							<h5><strong><%= articles[i].headline%></strong></h5>
+							<p><%= articles[i].summary%></p>
+						</div>
+					</a>
+				</div>
+
+				<% } j++;}} %>
+				<% for(i in articles) { if( articles[i] != undefined && articles[i].ranking == 2) {   if((j%2) ==1) {%>
+
+				<div class="homeBoxOdd col-lg-6 col-md-6 col-sm-6 ">
+					<a href="/article/<%=articles[i]._id%>" style="text-decoration: none;">
+						<div class="imgBox">
+							<img src="/uploaded/files/<%= articles[i].primaryimage%>" class="img-responsive homeArcImg">
+						</div>
+						<div class="textBox">
+							<h5><strong><%= articles[i].headline%></strong></h5>
+							<p><%= articles[i].summary%></p>
+						</div>
+					</a>
+				</div>
+
+				<% } else {%>
+
+				<div class="homeBoxEven col-lg-6 col-md-6 col-sm-6">
+					<a href="/article/<%=articles[i]._id%>" style="text-decoration: none;">
+						<div class="imgBox">
+							<img src="/uploaded/files/<%= articles[i].primaryimage%>" class="img-responsive homeArcImg">
+						</div>
+						<div class="textBox">
+							<h5><strong><%= articles[i].headline%></strong></h5>
+							<p><%= articles[i].summary%></p>
+						</div>
+					</a>
+				</div>
+
+				<% } j++;}} %>
+			</div>
+			<div class="col-sm-4 hidden-sm hidden-xs">
+				<div class="row homeBoxOddFlex">
+					<div class ="greenHead">Trending Today in Bangladesh News Media</div>
+					<% if(test[0] != undefined) { var tr = test[0].trend.split(" ")%>
+					<div class="inner">
+						<span class="tBig"><a href="/search?query=<%=tr[0]%>"><%=tr[0]%></a></span> <span class="tBig"><a href="/search?query=<%=tr[1]%>"><%=tr[1]%></a></span>
+						<span class="tBig"><a href="/search?query=<%=tr[2]%>"><%=tr[2]%></a></span> <span class="tBig"><a href="/search?query=<%=tr[3]%>"><%=tr[3]%></a></span>
+
+						<span class="tMedium"><a href="/search?query=<%=tr[4]%>"><%=tr[4]%></a></span> <span class="tMedium"><a href="/search?query=<%=tr[5]%>"><%=tr[5]%></a></span> 
+						<span class="tMedium"><a href="/search?query=<%=tr[6]%>"><%=tr[6]%></a></span> <span class="tMedium"><a href="/search?query=<%=tr[7]%>"><%=tr[7]%></a></span> 
+
+						<% for(var i=8; i<35; i++) {%>
+						&nbsp;<span class="tSmall"><a href="/search?query=<%=tr[i]%>"><%=tr[i]%></a></span>
+						<% } }%>
+					</div>
+				</div>
+				<div class="row homeBoxEvenFlex">
+					<div class ="orangeHead">Recent Articles</div>
+					<div class = "inner">
+						<% for(var i=0; i<recArc.length; i++) { if(i==10) break;%>
+						<div class="row arcSpace">
+							<a href="/article/<%=recArc[i]._id%>" style="text-decoration: none;"><%= recArc[i].headline%></a>
+						</div>
+						<% } %>
+					</div>
+				</div>
+				<div class="row homeBoxOddFlex">
+					<div class ="redHead">Most Read</div>
+					<div class = "inner">
+						<%
+						var swapped;
+						do {
+							swapped = 0;
+							for (var z=0; z < articles.length-1; z++) {
+								if (articles[z].click < articles[z+1].click) {
+
+									var temp = articles[z]
+									articles[z]= articles[z+1];
+									articles[z+1] = temp;
+									swapped = 1;
+								}
+							}
+						} while (swapped);
+						%>
+						<% for(var i=0; i<articles.length; i++) { if(i==10) break; %>
+						<div class="row arcSpace">
+							<a href="/article/<%=articles[i]._id%>" style="text-decoration: none;"><%= articles[i].headline%></a>
+						</div>
+						<% } %>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+ <!--<script type="text/javascript">var a = <%-%>;
+ console.log(a);
+</script>  --> 	
+
+
+</body>
+</html>

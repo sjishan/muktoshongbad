@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data - MuktoShongbad</title>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+  <link rel="stylesheet" href="/stylesheets/blueimp-gallery.min.css">
+  <script src="/javascripts/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.js"></script>
+  <script src="/javascripts/Chart.js-master/Chart.js"></script>
+
+</head>
+<body>
+  <div class="container">
+
+    <div class="row">
+      <span class="glyphicon glyphicon-comment" style="color:#d9534f;"></span> <%= words[0] %> &nbsp;
+      <span class="glyphicon glyphicon-comment" style="color:#f0ad4e;"></span> <%= words[1] %> &nbsp;
+      <span class="glyphicon glyphicon-comment" style="color:#428bca;"></span> <%= words[2] %> &nbsp;
+      <span class="glyphicon glyphicon-comment" style="color:#5cb85c;"></span> <%= words[3] %> &nbsp;
+      <span class="glyphicon glyphicon-comment" style="color:#9f6bcb;"></span> <%= words[4] %> &nbsp;
+    </div>
+
+  </div>
+
+  <canvas id="chart_M" width="1000" height="300" class="aspect-spacer" style="width: 100%; height: auto;"></canvas>
+
+  <canvas id="chart_1" width="1000" height="300" class="aspect-spacer" style="width: 100%; height: auto;"></canvas>
+
+  <canvas id="chart_2" width="1000" height="300" class="aspect-spacer" style="width: 100%; height: auto;"></canvas>
+
+  <canvas id="chart_3" width="1000" height="300" class="aspect-spacer" style="width: 100%; height: auto;"></canvas>
+
+  <canvas id="chart_4" width="1000" height="300" class="aspect-spacer" style="width: 100%; height: auto;"></canvas>
+
+  <canvas id="chart_5" width="1000" height="300" class="aspect-spacer" style="width: 100%; height: auto;"></canvas>
+
+  <script>
+    var movingAverage = <%- JSON.stringify(maList) %>;
+    var allData =<%- JSON.stringify(trendList) %>;
+    var ratio =<%- JSON.stringify(ratio) %>;
+    var main_data=[];
+    var main_labels=[];
+
+    $.each(allData, function(index, val) {
+
+      var a=[];
+      var b=[];
+      
+      $.each(val, function(i, v) {
+
+        var x = new Date(v[0]);
+        var y=new Date(x);
+
+
+        y.setHours ( x.getHours());
+
+        // console.log(y.toString().split('T')[1].split('.')[0]);
+
+        a.push(y.toTimeString().split(' ')[0]);
+
+        b.push(v[1]);
+      });
+
+      main_labels.push(a);
+      main_data.push(b);
+    });
+
+    var ts_data=[];
+    var ts_label=[];
+
+    $.each(movingAverage, function(index, val) {
+
+      var a=[];
+      var b=[];
+
+      $.each(val, function(i, v) {
+        a.push(v[0].split('T')[1].split('.')[0]);
+        b.push(v[1]);
+      });
+
+      ts_label.push(a);
+      ts_data.push(b);
+    });
+
+
+
+    // $.each(movingAverage, function(index, val) {
+    //   ts_label.push(val[0].split('T')[1].split('.')[0]);
+    //   ts_data.push(val[1]);
+    // });
+
+var labels=[];
+
+
+var data = {
+  labels: main_labels[0],
+  datasets: [
+  {
+    label: 'trend1',
+    fillColor: "rgba(217,83,79,0.05)",
+    strokeColor: "rgba(217,83,79,1)",
+    pointColor: "rgba(217,83,79,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(217,83,79,1)",
+    data: main_data[0]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(246,164,162,0.05)",
+    strokeColor: "rgba(246,164,162,1)",
+    pointColor: "rgba(246,164,162,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(246,164,162,1)",
+    data: ts_data[0]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(0,0,0,0)",
+    strokeColor: "rgba(0,0,0,1)",
+    pointColor: "rgba(0,0,0,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(0,0,0,1)",
+    data: ratio[0]
+  }
+  ]
+};  
+
+var data2 = {
+  labels: main_labels[1],
+  datasets: [
+  {
+    label: 'trend2',
+    fillColor: "rgba(237,154,37,0.05)",
+    strokeColor: "rgba(237,154,37,1)",
+    pointColor: "rgba(237,154,37,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(237,154,37,1)",
+    data: main_data[1]
+  },
+  {
+    label: 'trend2',
+    fillColor: "rgba(248,220,180,0.05)",
+    strokeColor: "rgba(248,220,180,1)",
+    pointColor: "rgba(248,220,180,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(248,220,180,1)",
+    data: ts_data[1]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(0,0,0,0)",
+    strokeColor: "rgba(0,0,0,1)",
+    pointColor: "rgba(0,0,0,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(0,0,0,1)",
+    data: ratio[1]
+  }
+  ]
+};
+
+var data3 = {
+  labels: main_labels[2],
+  datasets: [
+  {
+    label: 'trend3',
+    fillColor: "rgba(66,139,202,0.05)",
+    strokeColor: "rgba(66,139,202,1)",
+    pointColor: "rgba(66,139,202,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(66,139,202,1)",
+    data: main_data[2]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(122,201,223,0.05)",
+    strokeColor: "rgba(122,201,223,1)",
+    pointColor: "rgba(122,201,223,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(122,201,223,1)",
+    data: ts_data[2]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(0,0,0,0)",
+    strokeColor: "rgba(0,0,0,1)",
+    pointColor: "rgba(0,0,0,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(0,0,0,1)",
+    data: ratio[2]
+  }
+  ]
+};  
+
+var data4 = {
+  labels: main_labels[3],
+  datasets: [
+  {
+    label: 'trend4',
+    fillColor: "rgba(92,184,92,0.05)",
+    strokeColor: "rgba(92,184,92,1)",
+    pointColor: "rgba(92,184,92,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(92,184,92,1)",
+    data: main_data[3]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(149,222,149,0.05)",
+    strokeColor: "rgba(149,222,149,1)",
+    pointColor: "rgba(149,222,149,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(149,222,149,1)",
+    data: ts_data[3]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(0,0,0,0)",
+    strokeColor: "rgba(0,0,0,1)",
+    pointColor: "rgba(0,0,0,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(0,0,0,1)",
+    data: ratio[3]
+  }
+  ]
+};  
+
+var data5 = {
+  labels: main_labels[4],
+  datasets: [
+  {
+    label: 'trend5',
+    fillColor: "rgba(159,107,203,0.05)",
+    strokeColor: "rgba(159,107,203,1)",
+    pointColor: "rgba(159,107,203,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(159,107,203,1)",
+    data: main_data[4]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(221,181,255,0.05)",
+    strokeColor: "rgba(221,181,255,1)",
+    pointColor: "rgba(221,181,255,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(221,181,255,1)",
+    data: ts_data[4]
+  },
+  {
+    label: 'trend1',
+    fillColor: "rgba(0,0,0,0)",
+    strokeColor: "rgba(0,0,0,1)",
+    pointColor: "rgba(0,0,0,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(0,0,0,1)",
+    data: ratio[4]
+  }
+  ]
+};    
+
+
+var dataM = {
+  labels: main_labels[4],
+  datasets: [
+  {
+    label: 'trend5',
+    fillColor: "rgba(217,83,79,0.05)",
+    strokeColor: "rgba(217,83,79,1)",
+    pointColor: "rgba(217,83,79,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(217,83,79,1)",
+    data: main_data[0]
+  },
+  {
+    label: 'trend5',
+    fillColor: "rgba(240,173,78,0.05)",
+    strokeColor: "rgba(240,173,78,1)",
+    pointColor: "rgba(240,173,78,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(240,173,78,1)",
+    data: main_data[1]
+  },
+  {
+    label: 'trend5',
+    fillColor: "rgba(66,139,202,0.05)",
+    strokeColor: "rgba(66,139,202,1)",
+    pointColor: "rgba(66,139,202,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(66,139,202,1)",
+    data: main_data[2]
+  },
+  {
+    label: 'trend5',
+    fillColor: "rgba(92,184,92,0.05)",
+    strokeColor: "rgba(92,184,92,1)",
+    pointColor: "rgba(92,184,92,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(92,184,92,1)",
+    data: main_data[3]
+  },
+  {
+    label: 'trend5',
+    fillColor: "rgba(159,107,203,0.05)",
+    strokeColor: "rgba(159,107,203,1)",
+    pointColor: "rgba(159,107,203,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(159,107,203,1)",
+    data: main_data[4]
+  }
+  ]
+};  
+
+var options={
+
+    ///Boolean - Whether grid lines are shown across the chart
+    scaleShowGridLines : true,
+
+    //String - Colour of the grid lines
+    scaleGridLineColor : "rgba(0,0,0,.05)",
+
+    //Number - Width of the grid lines
+    scaleGridLineWidth : 1,
+
+    //Boolean - Whether the line is curved between points
+    bezierCurve : true,
+
+    //Number - Tension of the bezier curve between points
+    bezierCurveTension : 0,
+
+    //Boolean - Whether to show a dot for each point
+    pointDot : true,
+
+    //Number - Radius of each point dot in pixels
+    pointDotRadius : 4,
+
+    //Number - Pixel width of point dot stroke
+    pointDotStrokeWidth : 1,
+
+    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+    pointHitDetectionRadius : 10,
+
+    scaleShowLabels: true,
+
+    //Boolean - Whether to show a stroke for datasets
+    datasetStroke : true,
+
+    //Number - Pixel width of dataset stroke
+    datasetStrokeWidth : 2,
+
+    //Boolean - Whether to fill the dataset with a colour
+    datasetFill : true,
+
+    scaleBeginAtZero: true
+  };
+
+  var ctx = document.getElementById("chart_1").getContext("2d");
+
+  var myLineChart = new Chart(ctx).Line(data, options);
+
+  var ctx2 = document.getElementById("chart_2").getContext("2d");
+
+  var myLineChart2 = new Chart(ctx2).Line(data2, options);
+
+  var ctx3 = document.getElementById("chart_3").getContext("2d");
+
+  var myLineChart3 = new Chart(ctx3).Line(data3, options);
+
+  var ctx4 = document.getElementById("chart_4").getContext("2d");
+
+  var myLineChart4 = new Chart(ctx4).Line(data4, options);
+
+  var ctx5 = document.getElementById("chart_5").getContext("2d");
+
+  var myLineChart5 = new Chart(ctx5).Line(data5, options);
+
+  var ctxM = document.getElementById("chart_M").getContext("2d");
+
+  var myLineChartM = new Chart(ctxM).Line(dataM, options);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profile - MuktoShongbad</title>
+
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+
+  <script src="/javascripts/jquery.min.js"></script>
+  <script src="/javascripts/bootstrap.js"></script>
+</head>
+<body>
+
+	<% include head.ejs %> <br/>
+  <div class="container">
+    <% if(isAuthenticated) { %>
+    <div class="modal fade" id="reportUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <div id="userRepHead">
+              <h4 class="modal-title" id="myModalLabel">Report</h4>
+            </div>
+          </div>
+          <div class="modal-body">
+            <div id="userRepBody">
+              <p> Please mention your reason for reporting </p>
+              <input type="radio" name="reasonUser" value="Offensive Languages">Offensive Languages<br>
+              <input type="radio" name="reasonUser" value="Fake Information">Fake Information<br>
+              <input type="radio" name="reasonUser" value="Graphic or Adult Content">Graphic or Adult Content<br>
+              <input type="radio" name="reasonUser" value="Spam or Repitation">Spam or Repitation<br>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="hidden" id="typeUser" value="User">
+            <input type="hidden" id="reporternameUser" value="<%= user.name %>">
+            <input type="hidden" id="reporteridUser" value="<%= user.id %>">
+            <input type="hidden" id="reportedonUser" value="<%= meminfo._id %>">
+            <button id="reportUserBtn" type="button" class="btn btn-warning">Report</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+
+    
+    <% if (meminfo != null && meminfo.activated == 1) { %>
+
+    <div class="col-md-3">
+      <div class="homeBoxEvenFlex">
+        <div class="inner">
+          <div class ="imgbox">
+            <%if(meminfo.profileimage) { %><img style="height: 230px; width: 235px; overflow: hidden;" src="<%=meminfo.profileimage  %>">
+            <% } else { %><img style="height: 230px; width: 235px; overflow: hidden;" src="/images/default.jpg"> <% } %>
+          </div>
+          <br/>
+          
+          <p><strong> Name: </strong> <%= meminfo.name %></p>
+
+          <p><strong>Email:</strong> <%= meminfo.email %></p>
+
+          <p><strong>Join Date:</strong> <%= meminfo.joindate.toString().slice(0, -47) %></p>
+
+          <p> <strong>User Rating:</strong> <% for(var i=0; i < Math.round(meminfo.rate); i++) {%>
+            <span class="glyphicon glyphicon-star star"></span> <%}%></p>
+
+            <% if(isAuthenticated) { %> <p class="pull-right"><a href="" data-toggle="modal" data-target="#reportUser"> <span class="glyphicon glyphicon-warning-sign"></span> Report</a></p><br/> <% } %>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row blueHead">Articles Posted by <%=meminfo.name %></div>
+        <% for(var i=0; i < arcinfo.length; i++) { %>
+        <% if(i%2 ==0) {%>
+        <div class="homeBoxEvenFlexNoMargin">
+          <div class="inner">
+            <a href="/article/<%= arcinfo[i]._id%>"><%= arcinfo[i].headline%></a>
+          </div>
+        </div>
+        <% } else { %>
+        <div class="homeBoxOddFlexNoMargin">
+          <div class="inner">
+            <a href="/article/<%= arcinfo[i]._id%>"><%= arcinfo[i].headline%></a>
+          </div>
+        </div>
+        <% } } %>
+      </div>
+      <% } else { %>
+      <p>User does not Exist</p> 
+
+
+      <% } %> 
+
+   <!-- <% if ( (user !=null) && (JSON.stringify(meminfo._id) === JSON.stringify(user.id) )) { %>
+    <a href="/profile/<%= user.id%>/edit">Edit Profile</a>
+    <a href="/">Change Password</a>
+    <% } %> -->
+  </div>
+</body>
+
+<script>
+  $(function(){ 
+    $(document).on('click', '#reportUserBtn', function(event) {
+      event.preventDefault();
+      $(this).prop("disabled",true);
+      var data = {};
+      data.type = $('#typeUser').val();
+      data.reportername = $('#reporternameUser').val();
+      data.reporterid = $('#reporteridUser').val();
+      data.reportedon = $('#reportedonUser').val();
+      data.reason= $('input:radio[name=reasonUser]:checked').val();
+      console.log(data);
+      $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: '/report',            
+        success: function(data) {
+          if(data.success ==1)
+          {
+            //console.log(data.success); 
+            $(this).val("done");
+          }
+        }
+      }); 
+    });
+  });
+</script>
+</html>

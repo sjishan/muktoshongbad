@@ -1,0 +1,259 @@
+body {
+	padding: 50px 0px;
+	font: 14px "Segoe UI" ,"Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+	color: #00B7FF;
+}
+
+video {  
+	width:100%; 
+	max-width:640px; 
+	height:auto; 
+}
+
+audio {  
+	width:100%; 
+	max-width:640px; 
+	height:auto; 
+}
+
+mark p
+{
+	font-size: 11px;
+}
+
+a div
+{
+	color: #646464;
+}
+
+.row
+{
+	margin:0 !important;
+}
+
+.col-sm-7
+{
+	padding:0 !important;
+}
+
+.col-sm-6
+{
+	padding:0 !important;
+}
+
+.col-sm-4
+{
+	padding:0 !important;
+}
+
+.star
+{
+	color: #f9b618; /* Old browsers */
+	color: -moz-linear-gradient(-45deg,  #f9b618 0%, #f9ea11 100%); /* FF3.6+ */
+	color: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#f9b618), color-stop(100%,#f9ea11)); /* Chrome,Safari4+ */
+	color: -webkit-linear-gradient(-45deg,  #f9b618 0%,#f9ea11 100%); /* Chrome10+,Safari5.1+ */
+	color: -o-linear-gradient(-45deg,  #f9b618 0%,#f9ea11 100%); /* Opera 11.10+ */
+	color: -ms-linear-gradient(-45deg,  #f9b618 0%,#f9ea11 100%); /* IE10+ */
+	color: linear-gradient(135deg,  #f9b618 0%,#f9ea11 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9b618', endColorstr='#f9ea11',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+
+}
+
+
+/* Home Page */
+
+.homeBoxOdd
+{
+	height:360px;
+	background-color: #f2f2f2;
+
+	transition-duration:600ms;
+	-webkit-transition-duration:600ms;
+	-moz-transition-duration:600ms;
+	-o-transition-duration:600ms;
+	-ms-transition-duration:600ms;
+
+	transition-property:background-color;
+	-webkit-transition-property:background-color;
+	-moz-transition-property:background-color;
+	-o-transition-property:background-color;
+	-ms-transition-property:background-color;
+
+	transition-property:transform;
+	-webkit-transition-property:transform;
+	-moz-transition-property:transform;
+	-o-transition-property:transform;
+	-ms-transition-property:transform;
+
+	transform:scale3d(1, 1, 1);
+	-webkit-transform:scale3d(1, 1, 1);
+	-moz-transform:scale3d(1, 1, 1);
+	-o-transform:scale3d(1, 1, 1);
+	-ms-transform:scale3d(1, 1, 1);
+}
+
+.homeBoxEven
+{
+	height:360px;
+	background-color: #e4e4e4;
+
+	transition-duration:600ms;
+	-webkit-transition-duration:600ms;
+	-moz-transition-duration:600ms;
+	-o-transition-duration:600ms;
+	-ms-transition-duration:600ms;
+
+	transition-property:background-color;
+	-webkit-transition-property:background-color;
+	-moz-transition-property:background-color;
+	-o-transition-property:background-color;
+	-ms-transition-property:background-color;
+
+	transition-property:transform;
+	-webkit-transition-property:transform;
+	-moz-transition-property:transform;
+	-o-transition-property:transform;
+	-ms-transition-property:transform;
+
+	transform:scale3d(1, 1, 1);
+	-webkit-transform:scale3d(1, 1, 1);
+	-moz-transform:scale3d(1, 1, 1);
+	-o-transform:scale3d(1, 1, 1);
+	-ms-transform:scale3d(1, 1, 1);
+}
+
+.homeBoxOdd:hover, .homeBoxEven:hover
+{
+	background-color: #cdcdcd;
+
+	transform:scale3d(1.1, 1.1, 1.1);
+	-webkit-transform:scale3d(1.1, 1.1, 1.1);
+	-moz-transform:scale3d(1.1, 1.1, 1.1);
+	-o-transform:scale3d(1.1, 1.1, 1.1);
+	-ms-transform:scale3d(1.1, 1.1, 1.1);
+}
+
+.homeBoxOddFlex
+{
+	min-height:5px;
+	background-color: #f2f2f2;
+	margin-bottom: 15px !important;
+}
+
+.homeBoxEvenFlex
+{
+	min-height:5px;
+	background-color: #e4e4e4;
+	margin-bottom: 15px !important;
+}
+
+.homeBoxOddFlexNoMargin
+{
+	min-height:5px;
+	background-color: #f2f2f2;
+}
+
+.homeBoxEvenFlexNoMargin
+{
+	min-height:5px;
+	background-color: #e4e4e4;
+}
+
+.imgBox
+{
+	height:55%;
+}
+.imgBox img
+{
+	width: 100%;
+	height: 100%;
+	overflow:hidden;
+
+}   
+
+
+.homeArcImg
+{
+	max-width:100%;
+}
+
+.textBox
+{
+	padding: 10px;
+}
+
+.textBox p
+{
+	text-overflow: ellipsis;
+	font-size: 12px;
+}
+
+.arcSpace
+{
+	padding: 3px;
+}
+
+.tBig
+{
+	font-size: 22px;
+	margin:3px;
+}
+
+.tMedium
+{
+	font-size: 18px;
+	margin:3px;
+}
+
+.tSmall
+{
+	font-size: 14px;
+	margin:3px;
+}
+
+.greenHead
+{
+	background-color: #5cb85c;
+	font-size: 18px;
+	padding: 6px;
+	color: #ffffff;
+}
+
+.blueHead
+{
+	background-color: #428bca;
+	font-size: 18px;
+	padding: 6px;
+	color: #ffffff;
+}
+
+.orangeHead
+{
+	background-color: #f0ad4e;
+	font-size: 18px;
+	padding: 6px;
+	color: #ffffff;
+}
+
+.redHead
+{
+	background-color: #d9534f;
+	font-size: 18px;
+	padding: 6px;
+	color: #ffffff;
+}
+
+.inner
+{
+	padding: 10px;
+}
+/* Article */
+
+.arcRightCol
+{
+	margin: 15px 0;
+}
